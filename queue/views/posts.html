@@ -1,0 +1,14 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <ul>
+            <li class="list-group-item">
+                <div class="lead"><a href="/posts/{{post._id}}">{{post.title}}</a></div>
+                <a href="{{post.url}}" target="_blank">{{post.url}}</a>
+                <div><small>{{post.user}}</small></div>
+                <div class="text-right"><a href="/n/{{post.subreddit}}">{{post.subreddit}}</a></div>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

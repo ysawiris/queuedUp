@@ -18,7 +18,6 @@ module.exports = (app) => {
                 })
                 .then(user => {
                     console.log(`The user: ${user}`)
-                    console.log(`The array: ${user.posts}`)
                         // REDIRECT TO THE NEW POST
                     res.redirect('/');
                 })
@@ -28,5 +27,20 @@ module.exports = (app) => {
         } else {
             return res.status(401); // UNAUTHORIZED
         }
+    });
+
+    // INDEX
+    app.get('/post', (req, res) => {
+        const currentUser = req.user.id;
+        // LOOK UP THE POST
+
+        Post.find({ 'user': currentUser }).populate()
+            .then(post => {
+                console.log(`${post}`)
+                res.render("posts.html", { post, currentUser });
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
     });
 };
