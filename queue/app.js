@@ -5,7 +5,7 @@ const express = require('express'),
     SpotifyStrategy = require('../lib/passport-spotify/index').Strategy;
 
 const consolidate = require('consolidate');
-
+const exphbs = require('express-handlebars');
 
 const appKey = '68a547a1f72a4a39b6fc87c22ad99540';
 const appSecret = '3b1977e64db84ed5a91284cf37fa8107';
@@ -62,8 +62,8 @@ passport.use(
 
 
 // configure Express
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
 
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 // Initialize Passport!  Also use passport.session() middleware, to support
@@ -82,19 +82,20 @@ require('./controllers/posts.js')(app);
 require('./data/queue-db');
 
 app.get('/', function(req, res) {
-    res.render('index.html', { user: req.user });
+    console.log(req.user)
+    res.render('index', { user: req.user });
 });
 
 app.get('/posts/new', ensureAuthenticated, function(req, res) {
-    res.render('post-new.html', { user: req.user });
+    res.render('post-new', { user: req.user });
 });
 
 app.get('/account', ensureAuthenticated, function(req, res) {
-    res.render('account.html', { user: req.user });
+    res.render('account', { user: req.user });
 });
 
 app.get('/login', function(req, res) {
-    res.render('login.html', { user: req.user });
+    res.render('login', { user: req.user });
 });
 
 // GET /auth/spotify

@@ -1,0 +1,7 @@
+{{#if user}}
+<h2>Hello, {{ user.username }}.</h2>
+
+{{else}}
+<h2>Welcome! Please log in.</h2>
+<p><a href="/login">login</a></p>
+{{/if}}

@@ -37,7 +37,7 @@ module.exports = (app) => {
         Post.find({ 'user': currentUser }).populate()
             .then(post => {
                 console.log(`${post}`)
-                res.render("posts.html", { post, currentUser });
+                res.render("posts", { post, currentUser });
             })
             .catch(err => {
                 console.log(err.message);

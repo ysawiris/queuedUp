@@ -1,13 +1,13 @@
-{% block content %} {% if !user %}
+{{#if user}}
 <p>
     <a href="/">Home</a> |
     <a href="/login">Log In</a>
 </p>
-{% else %}
+{{else}}
 <p>
     <a href="/">Home</a> |
     <a href="/account">Account</a> |
     <a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a> |
     <a href="/logout">Log Out</a>
 </p>
-{% endif %} {% block content %} {% endblock%}
+{{/if}}
