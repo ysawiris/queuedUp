@@ -85,7 +85,7 @@ app.get('/', function(req, res) {
     res.render('index.html', { user: req.user });
 });
 
-app.get('/posts/new', function(req, res) {
+app.get('/posts/new', ensureAuthenticated, function(req, res) {
     res.render('post-new.html', { user: req.user });
 });
 
