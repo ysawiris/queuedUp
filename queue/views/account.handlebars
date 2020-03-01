@@ -1,6 +1,19 @@
-
+{{!-- 
 <p>ID: {{ user.id }}</p>
 <p>Profile:
     <a href=" {{ user.profileUrl }}">{{ user.profileUrl }}</a>
 </p>
-<img src="{{ user.photos }}"> 
+<img src="{{ user.photos }}">  --}}
+
+
+<div class=" card" style="background: transparent; border: 0px;">
+    <div class="row" style="margin: 15px;">
+        <img class="card-img-top " src="{{ user.photos }}" style="width: 25%; " alt="User Profile">
+        <div class="card-body" style="color: black;">
+            <p>ID: {{ user.id }}</p>
+            <p>Profile:
+                <a href=" {{ user.profileUrl }}">{{ user.profileUrl }}</a>
+            </p>
+        </div>
+    </div>
+</div>

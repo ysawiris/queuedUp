@@ -30,7 +30,7 @@ module.exports = (app) => {
     });
 
     // INDEX
-    app.get('/post', (req, res) => {
+    app.get('/posts', (req, res) => {
         const currentUser = req.user.id;
         // LOOK UP THE POST
 

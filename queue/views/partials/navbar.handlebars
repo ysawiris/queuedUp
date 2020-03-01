@@ -1,13 +1,29 @@
-{{#if user}}
-<p>
-    <a href="/">Home</a> |
-    <a href="/login">Log In</a>
-</p>
-{{else}}
+{{!-- {{#if user}}
 <p>
     <a href="/">Home</a> |
     <a href="/account">Account</a> |
     <a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a> |
+    <a href="/post">See Post</a>
     <a href="/logout">Log Out</a>
 </p>
-{{/if}}
+{{else}}
+<p>
+    <a href="/">Home</a> |
+    <a href="/login">Log In</a>
+</p>
+{{/if}} --}}
+
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href='/'>
+                <img alt="QueuedUp" src="/static/download.jpeg">
+            </a> |
+            <a href="/account" class="btn btn-secondary navbar-btn">Account</a> |
+            <a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a> |
+            <a href="/posts" class="btn btn-secondary navbar-btn">See Post</a> |
+            <a href="/logout" class="btn btn-secondary navbar-btn">Log Out</a>
+        </div>
+    </div>
+</nav>
