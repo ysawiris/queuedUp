@@ -17,9 +17,11 @@
         </div>
     </div>
 </div>
-
-<button type="submit" id="change_song" class="btn btn-primary" style="width: 8em">Accept</button>
-
+<div>
+    <input type="text" name="user_song" id="user_song">
+    <input type="hidden" name="user_token" id="user_token" value="BQDitDmm1Yu44fdZXLkCV2PG-nD2LSlndukOPiUd0iB8qmABoDB_ffOa2qoqtUB_i3CU7VPy8ZuzN2118YsNuQMdYiJS99-VgYbSYf3EXq2ipJT7Tqt1iEF-8a5UfCmUwcbMgmJmQyCv84EKSOVH0pvEh9owMPd0">
+    <button type="submit" id="change_song" class="btn btn-primary" style="width: 8em">Accept</button>
+</div>
 {{#if user.request}}
 {{#each newfriend}}
 <li style="border-bottom: 1px solid lightgray">
