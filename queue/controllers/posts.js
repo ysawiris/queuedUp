@@ -1,7 +1,6 @@
 const Post = require('../models/post');
 
-
-module.exports = (app) => {
+module.exports = (app, ensureAuthenticated) => {
 
     // CREATE
     app.post('/posts/new', (req, res) => {
@@ -30,14 +29,16 @@ module.exports = (app) => {
     });
 
     // INDEX
-    app.get('/posts', (req, res) => {
+    app.get('/posts', ensureAuthenticated, (req, res) => {
         const currentUser = req.user.id;
         // LOOK UP THE POST
+
+        console.log(req.user)
 
         Post.find({ 'user': currentUser }).populate()
             .then(post => {
                 console.log(`${post}`)
-                res.render("posts", { post, currentUser });
+                res.render("posts", { post, 'user': currentUser });
             })
             .catch(err => {
                 console.log(err.message);

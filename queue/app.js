@@ -4,16 +4,23 @@ const express = require('express'),
     swig = require('swig'),
     SpotifyStrategy = require('../lib/passport-spotify/index').Strategy;
 
+var path = require('path');
+
 const consolidate = require('consolidate');
 const exphbs = require('express-handlebars');
+const async = require('async')
+const keys = require('./config/keys');
 
-const appKey = '68a547a1f72a4a39b6fc87c22ad99540';
-const appSecret = '3b1977e64db84ed5a91284cf37fa8107';
+var http = require('http');
+
+var socketIO = require('socket.io');
+
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 
 const app = express();
 
+const User = require('./models/user');
 // Use Body Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,8 +49,8 @@ passport.deserializeUser(function(obj, done) {
 //   and spotify profile), and invoke a callback with a user object.
 passport.use(
     new SpotifyStrategy({
-            clientID: appKey,
-            clientSecret: appSecret,
+            clientID: keys.spotify.clientID,
+            clientSecret: keys.spotify.clientSecret,
             callbackURL: 'http://localhost:3000/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
@@ -53,16 +60,54 @@ passport.use(
                 // represent the logged-in user. In a typical application, you would want
                 // to associate the spotify account with a user record in your database,
                 // and return that user instead.
+                User.findOne({ spotifyId: profile.id })
+                    .then((currentUser) => {
+                        if (currentUser) {
+                            //already have the user
+                            console.log('user is: ', currentUser)
+                                // profile.friendsList = currentUser.friendsList
+                                // profile.sentRequest = currentUser.sentRequest
+                                // profile.request = currentUser.request
+                                // profile.totalRequest = currentUser.totalRequest
+                        } else {
+                            new User({
+                                username: profile.displayName,
+                                spotifyId: profile.id,
+                                spotifyToken: accessToken
+                            }).save().then((newUser) => {
+                                console.log('new user created:' + newUser)
+                                    // profile.friendsList = newUser.friendsList
+                                    // profile.sentRequest = newUser.sentRequest
+                                    // profile.request = newUser.request
+                                    // profile.totalRequest = newUser.totalRequest
+                            })
+                        }
+                    });
                 return done(null, profile);
+
             });
         }
     )
 );
 
+const server = http.createServer(app);
+const io = socketIO(server);
 
+require('./socket/friend')(io);
 
-// configure Express
-app.engine('handlebars', exphbs());
+// View Engine
+app.set('views', path.join(__dirname, 'views'));
+app.engine('handlebars', exphbs({
+    helpers: {
+        ifIn: function(elem, list, options) {
+            if (list.indexOf(elem) > -1) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        }
+    },
+    defaultLayout: 'main'
+}));
 app.set('view engine', 'handlebars');
 
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
@@ -71,27 +116,51 @@ app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(__dirname + '/public'));
+// Set Static Folder
+app.use(express.static(path.join(__dirname, '/static')));
+// Set Static Folder
+app.use(express.static(path.join(__dirname, '/config')));
 
 app.engine('html', consolidate.swig);
 
 //Link Controllers
-require('./controllers/posts.js')(app);
+require('./controllers/posts.js')(app, ensureAuthenticated);
+require('./controllers/friends.js')(app, ensureAuthenticated);
 
 // Set db
 require('./data/queue-db');
 
 app.get('/', function(req, res) {
-    console.log(req.user)
+    console.log("i made to the index")
     res.render('index', { user: req.user });
+
 });
 
 app.get('/posts/new', ensureAuthenticated, function(req, res) {
     res.render('post-new', { user: req.user });
 });
 
+
+app.get('/posts', ensureAuthenticated, function(req, res) {
+    res.render('posts', { user: req.user });
+});
+
 app.get('/account', ensureAuthenticated, function(req, res) {
-    res.render('account', { user: req.user });
+
+    const currentUser = req.user.id;
+
+    User.findOne({ 'spotifyId': currentUser })
+        .then(user => {
+            console.log(`${user}`)
+            console.log(user.request)
+            console.log(req.user)
+            res.render("account", { user, newfriend: user.request, passport: req.user });
+        })
+        .catch(err => {
+            console.log(err.message);
+        });
+
+    // res.render('account', { user: req.user, newfriend: currentUser.request });
 });
 
 app.get('/login', function(req, res) {
@@ -106,7 +175,7 @@ app.get('/login', function(req, res) {
 app.get(
     '/auth/spotify',
     passport.authenticate('spotify', {
-        scope: ['user-read-email', 'user-read-private'],
+        scope: ['user-read-email', 'user-read-private', 'user-modify-playback-state'],
         showDialog: true
     }),
     function(req, res) {
@@ -114,6 +183,9 @@ app.get(
         // function will not be called.
     }
 );
+
+
+
 
 // GET /auth/spotify/callback
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -124,6 +196,7 @@ app.get(
     '/callback',
     passport.authenticate('spotify', { failureRedirect: '/login' }),
     function(req, res) {
+        console.log("in the callback function")
         res.redirect('/');
     }
 );
@@ -133,8 +206,15 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-app.listen(3000, () => {
-    console.log('Queued is listening on port localhost:3000!');
+// Set Port
+app.set('port', (process.env.PORT || 3000));
+
+// app.listen(app.get('port'), function(){
+// 	console.log('Server started on port '+app.get('port'));
+// });
+
+server.listen(app.get('port'), function() {
+    console.log('listening on port 3000');
 });
 
 // Simple route middleware to ensure user is authenticated.

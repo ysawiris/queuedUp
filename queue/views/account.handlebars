@@ -8,12 +8,43 @@
 
 <div class=" card" style="background: transparent; border: 0px;">
     <div class="row" style="margin: 15px;">
-        <img class="card-img-top " src="{{ user.photos }}" style="width: 25%; " alt="User Profile">
+        <img class="card-img-top " src="{{ passport.photos }}" style="width: 25%; " alt="User Profile">
         <div class="card-body" style="color: black;">
-            <p>ID: {{ user.id }}</p>
+            <p>ID: {{ passport.id }}</p>
             <p>Profile:
-                <a href=" {{ user.profileUrl }}">{{ user.profileUrl }}</a>
+                <a href="{{ passport.profileUrl }}">{{ passort.profileUrl }}</a>
             </p>
         </div>
     </div>
 </div>
+
+<button type="submit" id="add_Song" class="btn btn-primary" style="width: 8em">Accept</button>
+
+{{#if user.request}}
+{{#each newfriend}}
+<li style="border-bottom: 1px solid lightgray">
+        <div>
+        <h4>{{this.username}}</h4>
+        </div>
+        <div>
+            <div style="width: 50%; display: inline;">
+            <input type="hidden" name="senderId" id="senderId" value="{{this._id}}">
+            <input type="hidden" name="senderName" id="senderName" value="{{this.username}}">
+            <button type="submit" id="accept_friend" class="btn btn-primary" style="width: 8em">Accept</button>
+            </div>
+            <div style="width: 50%;  display: inline;">
+                <input type="hidden" name="user_Id" id="user_Id" value="{{this._id}}">
+            <button type="submit" id="cancel_friend" class="btn btn-primary" style="width: 8em">Cancel</button>
+            </div>
+        </div>    
+</li>
+{{/each}}
+{{else}}
+<div>
+    <h4 style="text-align:center">No requests</h4>
+</div>
+{{/if}}
+
+
+
+
