@@ -3,14 +3,23 @@ var async = require('async');
 
 module.exports = (app, ensureAuthenticated) => {
 
-
-    app.get('/search', ensureAuthenticated, function(req, res) {
+    app.get('/search', ensureAuthenticated, (req, res) => {
         var sent = [];
         var friends = [];
         var received = [];
-        received = req.user.request;
-        sent = req.user.sentRequest;
-        friends = req.user.friendsList;
+
+        User.findOne({ spotifyId: req.user.id })
+            .then((currentUser) => {
+                if (currentUser) {
+                    console.log(currentUser.request)
+                    received = currentUser.request;
+                    sent = currentUser.sentRequest;
+                    friends = currentUser.friendsList;
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
 
 
 
@@ -18,6 +27,7 @@ module.exports = (app, ensureAuthenticated) => {
             if (err) throw err;
 
             res.render('search', {
+                user: req.user.id,
                 result: result,
                 sent: sent,
                 friends: friends,
@@ -26,7 +36,7 @@ module.exports = (app, ensureAuthenticated) => {
         });
     });
 
-    app.post('/search', ensureAuthenticated, function(req, res) {
+    app.post('/search', ensureAuthenticated, (req, res) => {
         var searchfriend = req.body.searchfriend;
         if (searchfriend) {
             var mssg = '';

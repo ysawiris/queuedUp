@@ -11,6 +11,18 @@ const exphbs = require('express-handlebars');
 const async = require('async')
 const keys = require('./config/keys');
 
+//Import the Spotify API
+var SpotifyWebApi = require('node-spotify-api');
+
+
+var spotifyApi = new SpotifyWebApi({
+    id: keys.spotify.clientID,
+    secret: keys.spotify.clientSecret,
+    callbackURL: 'http://localhost:3000/callback'
+});
+
+// var spotify = new Spotify(keys.spotifyKeys)
+
 var http = require('http');
 
 var socketIO = require('socket.io');
@@ -65,6 +77,9 @@ passport.use(
                         if (currentUser) {
                             //already have the user
                             console.log('user is: ', currentUser)
+                            console.log(accessToken)
+                            currentUser.spotifyToken = accessToken
+                            currentUser.save()
                                 // profile.friendsList = currentUser.friendsList
                                 // profile.sentRequest = currentUser.sentRequest
                                 // profile.request = currentUser.request
@@ -183,8 +198,6 @@ app.get(
         // function will not be called.
     }
 );
-
-
 
 
 // GET /auth/spotify/callback
