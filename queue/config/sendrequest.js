@@ -53,6 +53,24 @@ $(document).ready(function() {
         });
         $('#reload').load(location.href + ' #reload');
     });
+    $('#song_search').on('click', function() {
+        let spotifytoken = $('#user_token').val()
+        let song = $('#song').val()
+
+        $.ajax({
+            url: `https://api.spotify.com/v1/search?q=${song}&type=track`,
+            type: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + spotifytoken
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+        $('#reload').load(location.href + ' #reload');
+    });
     $('#change_song').on('click', function() {
         let spotifytoken = $('#user_token').val()
         let song = $('#user_song').val()
