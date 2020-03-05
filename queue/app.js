@@ -18,7 +18,7 @@ var SpotifyWebApi = require('node-spotify-api');
 var spotifyApi = new SpotifyWebApi({
     id: keys.spotify.clientID,
     secret: keys.spotify.clientSecret,
-    callbackURL: 'http://localhost:3000/callback'
+    callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
 });
 
 // var spotify = new Spotify(keys.spotifyKeys)
