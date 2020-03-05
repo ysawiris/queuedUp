@@ -6,6 +6,11 @@ const express = require('express'),
 
 var path = require('path');
 
+const mongoose = require('mongoose')
+const mongo_uri = process.env.MONGODB_URI
+mongoose.connect(mongo_uri)
+
+
 const consolidate = require('consolidate');
 const exphbs = require('express-handlebars');
 const async = require('async')
