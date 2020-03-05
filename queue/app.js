@@ -63,7 +63,7 @@ passport.use(
     new SpotifyStrategy({
             clientID: keys.spotify.clientID,
             clientSecret: keys.spotify.clientSecret,
-            callbackURL: 'http://localhost:3000/callback'
+            callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
             // asynchronous verification, for effect...
