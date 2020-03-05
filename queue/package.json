@@ -18,6 +18,9 @@
         "socket.io": "^2.3.0",
         "swig": "~1.3.2"
     },
+    "scripts": {
+        "start": "node src/app.js"
+    },
     "devDependencies": {
         "handlebars": "^4.5.0"
     }
