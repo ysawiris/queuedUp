@@ -27,7 +27,7 @@ module.exports = (app, ensureAuthenticated) => {
             if (err) throw err;
 
             res.render('search', {
-                user: req.user.id,
+                user: req.user,
                 result: result,
                 sent: sent,
                 friends: friends,

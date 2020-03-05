@@ -1,0 +1,15 @@
+<div class="card" style="background: transparent; border: 0px;">
+    <div class="row" style="margin: 15px;">
+        <img class="card-img-top " src="{{ user.photos }}" style="width: 25%; " alt="User Profile">
+        <div class="card-body" style="color: black;">
+            <p>ID: {{ frienduser.username }}</p>
+            <p>Token {{ frienduser.spotifyToken }}</p>
+        </div>
+    </div>
+</div>
+
+<div>
+    <input type="text" name="user_song" id="user_song">
+    <input type="hidden" name="user_token" id="user_token" value="{{ frienduser.spotifyToken }}">
+    <button type="submit" id="change_song" class="btn btn-primary" style="width: 8em">Accept</button>
+</div>

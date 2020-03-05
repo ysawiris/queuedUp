@@ -78,6 +78,7 @@ passport.use(
                             //already have the user
                             console.log('user is: ', currentUser)
                             console.log(accessToken)
+                            console.log(expires_in)
                             currentUser.spotifyToken = accessToken
                             currentUser.save()
                                 // profile.friendsList = currentUser.friendsList
@@ -141,6 +142,7 @@ app.engine('html', consolidate.swig);
 //Link Controllers
 require('./controllers/posts.js')(app, ensureAuthenticated);
 require('./controllers/friends.js')(app, ensureAuthenticated);
+require('./controllers/queue_friends.js')(app, ensureAuthenticated);
 
 // Set db
 require('./data/queue-db');
@@ -149,33 +151,6 @@ app.get('/', function(req, res) {
     console.log("i made to the index")
     res.render('index', { user: req.user });
 
-});
-
-app.get('/posts/new', ensureAuthenticated, function(req, res) {
-    res.render('post-new', { user: req.user });
-});
-
-
-app.get('/posts', ensureAuthenticated, function(req, res) {
-    res.render('posts', { user: req.user });
-});
-
-app.get('/account', ensureAuthenticated, function(req, res) {
-
-    const currentUser = req.user.id;
-
-    User.findOne({ 'spotifyId': currentUser })
-        .then(user => {
-            console.log(`${user}`)
-            console.log(user.request)
-            console.log(req.user)
-            res.render("account", { user, newfriend: user.request, passport: req.user });
-        })
-        .catch(err => {
-            console.log(err.message);
-        });
-
-    // res.render('account', { user: req.user, newfriend: currentUser.request });
 });
 
 app.get('/login', function(req, res) {

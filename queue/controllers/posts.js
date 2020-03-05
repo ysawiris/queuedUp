@@ -2,6 +2,10 @@ const Post = require('../models/post');
 
 module.exports = (app, ensureAuthenticated) => {
 
+    app.get('/posts/new', ensureAuthenticated, function(req, res) {
+        res.render('post-new', { user: req.user });
+    });
+
     // CREATE
     app.post('/posts/new', (req, res) => {
         console.log(`${req.user.id}`)
