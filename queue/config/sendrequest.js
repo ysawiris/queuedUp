@@ -74,7 +74,6 @@ $(document).ready(function() {
                     <div class="row">
                         <a href="${song.uri}">${song.uri}</a>
                         <input type="hidden" name="user_song" id="user_song" value="${song.uri}">
-                        <input type="hidden" name="user_token" id="user_token" value="{{ frienduser.spotifyToken }}">
                         <button 
                             data-token="{{ frienduser.spotifyToken }}"
                             data-uri="${song.uri}"
@@ -93,6 +92,8 @@ $(document).ready(function() {
     $('body').on('click', '.change_song', function(e) {
         let spotifytoken = $('#user_token').val()
         let song = $(this).data('uri')
+
+        console.log(spotifytoken)
 
         $.ajax({
             url: 'https://api.spotify.com/v1/me/player/queue?uri=' + song,

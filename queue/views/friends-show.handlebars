@@ -2,11 +2,13 @@
     <div class="row" style="margin: 15px;">
         <img class="card-img-top " src="{{ currentuser.photos }}" style="width: 25%; " alt="User Profile">
         <div class="card-body" style="color: black;">
-            <p>ID: {{ frienduser.username }}</p>
+            <p>ID: {{ frienduser.spotifyToken}}</p>
         </div>
     </div>
 </div>
-
+<div>
+    <input type="hidden" name="user_token" id="user_token" value="{{ frienduser.spotifyToken }}">
+</div>
 <div>
     <input type="text" name="song" id="song">
     <input type="hidden" name="user_token1" id="user_token1" value="{{ user.spotifyToken }}">

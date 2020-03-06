@@ -55,7 +55,8 @@ module.exports = (app, ensureAuthenticated) => {
             .then(frienduser => {
                 User.findOne({ 'spotifyId': req.user.id })
                     .then(user => {
-                        console.log(frienduser);
+                        console.log('yeee')
+                        console.log(frienduser.spotifyToken);
                         res.render('friends-show', { user, frienduser, currentuser: req.user })
 
                     })
