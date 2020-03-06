@@ -6,13 +6,16 @@
         </div>
     </div>
 </div>
-<div>
-    <input type="hidden" name="user_token" id="user_token" value="{{ frienduser.spotifyToken }}">
-</div>
+
 <div>
     <input type="text" name="song" id="song">
     <input type="hidden" name="user_token1" id="user_token1" value="{{ user.spotifyToken }}">
     <button type="submit" id="song_search" class="btn btn-primary" style="width: 8em">Accept</button>
+</div>
+
+
+<div>
+    <input class="change_song" type="hidden" name="friend_token" id="friend_token" value="{{ frienduser.spotifyToken }}">
 </div>
 
 <div class="container" id="el">

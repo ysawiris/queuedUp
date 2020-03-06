@@ -75,7 +75,6 @@ $(document).ready(function() {
                         <a href="${song.uri}">${song.uri}</a>
                         <input type="hidden" name="user_song" id="user_song" value="${song.uri}">
                         <button 
-                            data-token="{{ frienduser.spotifyToken }}"
                             data-uri="${song.uri}"
                             type="submit" 
                             class="btn btn-primary change_song" 
@@ -90,7 +89,7 @@ $(document).ready(function() {
         $('#reload').load(location.href + ' #reload');
     });
     $('body').on('click', '.change_song', function(e) {
-        let spotifytoken = $('#user_token').val()
+        let spotifytoken = $('#friend_token').val()
         let song = $(this).data('uri')
 
         console.log(spotifytoken)
