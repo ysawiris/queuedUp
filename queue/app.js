@@ -23,7 +23,8 @@ var SpotifyWebApi = require('node-spotify-api');
 var spotifyApi = new SpotifyWebApi({
     id: keys.spotify.clientID,
     secret: keys.spotify.clientSecret,
-    callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+    // callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+    callbackURL: 'http://localhost:3000/callback'
 });
 
 // var spotify = new Spotify(keys.spotifyKeys)
@@ -69,6 +70,7 @@ passport.use(
             clientID: keys.spotify.clientID,
             clientSecret: keys.spotify.clientSecret,
             callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+                // callbackURL: 'http://localhost:3000/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
             // asynchronous verification, for effect...

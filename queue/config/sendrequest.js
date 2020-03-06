@@ -66,14 +66,33 @@ $(document).ready(function() {
                 'Authorization': 'Bearer ' + spotifytoken
             },
             success: function(data) {
-                console.log(data);
+                console.log('*******************')
+                console.log(data.tracks.items[0]);
+                let htmlstr = ''
+                data.tracks.items.forEach(song => {
+                    htmlstr += `
+                    <div class="row">
+                        <a href="${song.uri}">${song.uri}</a>
+                        <input type="hidden" name="user_song" id="user_song" value="${song.uri}">
+                        <input type="hidden" name="user_token" id="user_token" value="{{ frienduser.spotifyToken }}">
+                        <button 
+                            data-token="{{ frienduser.spotifyToken }}"
+                            data-uri="${song.uri}"
+                            type="submit" 
+                            class="btn btn-primary change_song" 
+                            style="width: 8em">Accept</button>
+                        <p>${song.name}</p>
+                    </div>`
+                });
+
+                el.innerHTML = htmlstr
             }
         });
         $('#reload').load(location.href + ' #reload');
     });
-    $('#change_song').on('click', function() {
+    $('body').on('click', '.change_song', function(e) {
         let spotifytoken = $('#user_token').val()
-        let song = $('#user_song').val()
+        let song = $(this).data('uri')
 
         $.ajax({
             url: 'https://api.spotify.com/v1/me/player/queue?uri=' + song,
