@@ -35,6 +35,8 @@ module.exports = (app, ensureAuthenticated) => {
                 if (user.friendsList) {
                     let friends = user.friendsList
                     console.log(`friends:${user.friendsList}`)
+                    console.log('this is current user')
+                    console.log(currentUser)
 
                     res.render("account", { user, newfriend: user.request, passport: req.user, friends });
 
@@ -51,8 +53,15 @@ module.exports = (app, ensureAuthenticated) => {
 
         User.findById(req.params.id)
             .then(frienduser => {
-                console.log(frienduser)
-                res.render('friends-show', { user: req.user, frienduser })
+                User.findOne({ 'spotifyId': req.user.id })
+                    .then(user => {
+                        console.log(frienduser);
+                        res.render('friends-show', { user, frienduser, currentuser: req.user })
+
+                    })
+                    .catch(err => {
+                        console.log(err.message);
+                    });
             })
             .catch(err => {
                 console.log(err.message);

@@ -54,7 +54,7 @@ $(document).ready(function() {
         $('#reload').load(location.href + ' #reload');
     });
     $('#song_search').on('click', function() {
-        let spotifytoken = $('#user_token').val()
+        let spotifytoken = $('#user_token1').val()
         let song = $('#song').val()
 
         $.ajax({
