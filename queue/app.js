@@ -6,9 +6,9 @@ const express = require('express'),
 
 var path = require('path');
 
-// const mongoose = require('mongoose')
-// const mongo_uri = process.env.MONGODB_URI
-// mongoose.connect(mongo_uri)
+const mongoose = require('mongoose')
+const mongo_uri = process.env.MONGODB_URI
+mongoose.connect(mongo_uri)
 
 
 const consolidate = require('consolidate');
@@ -69,8 +69,8 @@ passport.use(
     new SpotifyStrategy({
             clientID: keys.spotify.clientID,
             clientSecret: keys.spotify.clientSecret,
-            // callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-            callbackURL: 'http://localhost:3000/callback'
+            callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+                // callbackURL: 'http://localhost:3000/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
             // asynchronous verification, for effect...
