@@ -72,14 +72,13 @@ $(document).ready(function() {
                 data.tracks.items.forEach(song => {
                     htmlstr += `
                     <div class="row">
-                        <a href="${song.uri}">${song.uri}</a>
-                        <input type="hidden" name="user_song" id="user_song" value="${song.uri}">
+                        <img class="header-image" src='${song.album.images[2].url}' alt="logo">
+                        <h5>${song.name}</h>
+                        <h6>by:${song.artists[0].name}</h6>
                         <button 
                             data-uri="${song.uri}"
                             type="submit" 
-                            class="btn btn-primary change_song" 
-                            style="width: 8em">Accept</button>
-                        <p>${song.name}</p>
+                            class="btn btn-success change_song">Accept</button>
                     </div>`
                 });
 
@@ -108,5 +107,4 @@ $(document).ready(function() {
         });
         $('#reload').load(location.href + ' #reload');
     });
-    $('#reload').load(location.href + ' #reload');
 });

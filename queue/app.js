@@ -140,8 +140,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Set Static Folder
-app.use(express.static(path.join(__dirname, '/static')));
-// Set Static Folder
+app.use(express.static(path.join(__dirname, '/views')));
+
 app.use(express.static(path.join(__dirname, '/config')));
 
 app.engine('html', consolidate.swig);
@@ -221,5 +221,5 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/login');
+    res.redirect('/');
 }

@@ -34,6 +34,7 @@ module.exports = (app, ensureAuthenticated) => {
                 received: received
             });
         });
+
     });
 
     app.post('/search', ensureAuthenticated, (req, res) => {

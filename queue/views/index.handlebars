@@ -2,6 +2,12 @@
 <h2>Hello, {{ user.username }}.</h2>
 
 {{else}}
-<h2>Welcome! Please log in.</h2>
-<p><a href="/login">login</a></p>
+<div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron container">
+        <img class="header-image" src='/static/QueuedUP-logo1.png' alt="logo" style="max-width: 375px; max-height: 600px;">
+        <a href="/auth/spotify" class="btn btn-primary navbar-btn">Login With Spotify</a>
+        <p class="lead" style="text-align: center; padding: 1rem; color: lightslategrey; font-family: 'Montserrat', sans-serif;">Adding song to your friend's Spotify queue was never this EASY!</p>
+    </div>
+</div>
 {{/if}}
+
