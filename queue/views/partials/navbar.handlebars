@@ -12,9 +12,27 @@
     <a href="/login">Log In</a>
 </p>
 {{/if}} --}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href='/'>
+        <img class="header-image" src='/static/QueuedUP-logo1.png' alt="logo" style="max-width: 150px; max-height: 200px;">
+    </a> 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+        {{#if user}}
+            <a href="/friends" class="btn btn-primary navbar-btn">Friends</a>
+            <a href="/posts/new" class="btn btn-secondary navbar-btn">New Post</a>
+            <a href="/posts" class="btn btn-secondary navbar-btn">See Post</a>
+            <a href="/search" class="btn btn-secondary navbar-btn">Add Friends</a>
+            <a href="/logout" class="btn btn-secondary navbar-btn">Log Out</a>
+        {{/if}}
+        </div>
+    </div>
+</nav>
 
-
-<nav class="navbar navbar-default">
+{{!-- <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             {{#if user}}
@@ -29,4 +47,4 @@
             {{/if}}
         </div>
     </div>
-</nav>
+</nav> --}}
