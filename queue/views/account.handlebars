@@ -21,6 +21,7 @@
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
         <ul>
+            <div class="col-title">Friends: </div>
             {{#each friends}}
                 <li class="list-group-item">
                     <div class="lead"><a href="/friends/{{this.friendId}}">{{this.friendName}}</a></div>
@@ -29,6 +30,8 @@
         </ul>
     </div>
 </div>
+
+<div class="title">Friend Request:</div>
 {{#if user.request}}
 {{#each newfriend}}
 <li style="border-bottom: 1px solid lightgray">

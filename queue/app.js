@@ -6,9 +6,9 @@ const express = require('express'),
 
 var path = require('path');
 
-// const mongoose = require('mongoose')
-// const mongo_uri = process.env.MONGODB_URI
-// mongoose.connect(mongo_uri)
+const mongoose = require('mongoose')
+const mongo_uri = process.env.MONGODB_URI
+mongoose.connect(mongo_uri)
 
 
 const consolidate = require('consolidate');
@@ -23,8 +23,8 @@ var SpotifyWebApi = require('node-spotify-api');
 var spotifyApi = new SpotifyWebApi({
     id: keys.spotify.clientID,
     secret: keys.spotify.clientSecret,
-    // callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-    callbackURL: 'http://localhost:3000/callback'
+    callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+        // callbackURL: 'http://localhost:3000/callback'
 });
 
 // var spotify = new Spotify(keys.spotifyKeys)
@@ -84,9 +84,11 @@ passport.use(
                         if (currentUser) {
                             //already have the user
                             console.log('user is: ', currentUser)
+                            console.log(profile)
                             console.log(accessToken)
                             console.log(expires_in)
                             currentUser.spotifyToken = accessToken
+                            currentUser.photo = profile.photos[0]
                             currentUser.save()
                                 // profile.friendsList = currentUser.friendsList
                                 // profile.sentRequest = currentUser.sentRequest
@@ -95,6 +97,7 @@ passport.use(
                         } else {
                             new User({
                                 username: profile.displayName,
+                                photo: profile.photos[0],
                                 spotifyId: profile.id,
                                 spotifyToken: accessToken
                             }).save().then((newUser) => {
