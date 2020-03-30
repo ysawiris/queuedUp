@@ -9,10 +9,11 @@
         <div class="navbar-nav">
         {{#if user}}
             <a href="/friends" class="nav-links">Friends</a>
-            <a href="/posts/new" class="nav-links">New Post</a>
-            <a href="/posts" class="nav-links">See Post</a>
             <a href="/search" class="nav-links">Add Friends</a>
+            <a href="/posts/new" class="nav-links">Contact Us</a>
             <a href="/logout" class="nav-links">Log Out</a>
+        {{else}}
+            <a href="/auth/spotify" class="nav-links">Login With Spotify</a>
         {{/if}}
         </div>
     </div>

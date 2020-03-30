@@ -1,8 +1,11 @@
-{{#if user}}
-{{!-- <h2>Hello, {{ user.username }}.</h2> --}}
-
+{{!-- {{#if user}}
+<h2>Hello, {{ user.username }}.</h2> --}}
 <section class="c-section">
+{{#if user}}
+  <h2 class="c-section__title"><span>Hello, {{ user.username }}!</span></h2>
+{{else}}
   <h2 class="c-section__title"><span>How it works!</span></h2>
+{{/if}}
   <ul class="c-services">
     <li class="c-services__item">
       <h3>Find Your Friends</h3>
@@ -30,7 +33,7 @@
     </li>
   </ul>
 </section>
-
+{{!-- 
 {{else}}
 <div class="jumbotron jumbotron-fluid">
     <div class="jumbotron container">
@@ -39,5 +42,5 @@
         <p class="lead" style="text-align: center; padding: 1rem; color: lightslategrey; font-family: 'Montserrat', sans-serif;">Adding song to your friend's Spotify queue was never this EASY!</p>
     </div>
 </div>
-{{/if}}
+{{/if}} --}}
 

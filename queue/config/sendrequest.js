@@ -75,6 +75,7 @@ function addFriend(name) {
             receiverName: name
         },
         success: function() {
+            alert("Yay, your adding a friend!")
 
         }
     })
@@ -98,6 +99,7 @@ $(document).ready(function() {
             },
             success: function() {
                 $(this).parent().eq(1).remove();
+                alert("YAY, you just added a friend")
             }
         });
         $('#reload').load(location.href + '#reload');
@@ -135,13 +137,12 @@ $(document).ready(function() {
                 let htmlstr = '<div class="scroll-content">'
                 data.tracks.items.forEach(song => {
                     htmlstr += `<div class="row">
-                            <img class="header-image" src='${song.album.images[2].url}' alt="logo">
-                            <h5>${song.name}</h>
-                            <h6>by:${song.artists[0].name}</h6>
-                            <button 
-                                data-uri="${song.uri}"
-                                type="submit" 
-                                class="btn btn-success change_song">Accept</button>
+                            <img class="header-image" src='${song.album.images[0].url}' alt="logo" style="max-width: 150px; max-height: 150px;">
+                            <div>
+                                <h5>${song.name}</h>
+                                <h6>by:${song.artists[0].name}</h6>
+                                <button data-uri="${song.uri}" type="submit" class="btn btn-success change_song">Accept</button>
+                            </div>
                         </div>`
                 });
                 el.innerHTML = htmlstr + '</div>'
@@ -165,6 +166,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 console.log(data);
+                alert("You successfully added a song!")
             }
         });
         $('#reload').load(location.href + '#reload');
