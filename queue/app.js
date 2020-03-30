@@ -16,18 +16,6 @@ const exphbs = require('express-handlebars');
 const async = require('async')
 const keys = require('./config/keys');
 
-//Import the Spotify API
-var SpotifyWebApi = require('node-spotify-api');
-
-
-var spotifyApi = new SpotifyWebApi({
-    id: keys.spotify.clientID,
-    secret: keys.spotify.clientSecret,
-    callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-        // callbackURL: 'http://localhost:3000/callback'
-});
-
-// var spotify = new Spotify(keys.spotifyKeys)
 
 var http = require('http');
 
@@ -69,8 +57,8 @@ passport.use(
     new SpotifyStrategy({
             clientID: keys.spotify.clientID,
             clientSecret: keys.spotify.clientSecret,
-            // callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-            callbackURL: 'http://localhost:3000/callback'
+            callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+                // callbackURL: 'http://localhost:3000/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
             // asynchronous verification, for effect...
