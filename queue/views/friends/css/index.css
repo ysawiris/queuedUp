@@ -4,9 +4,7 @@ body {
     color: white;
 }
 
-.col-sm-8 {
-    display: flex;
-    justify-content: center;
+.col-sm-6 {
     padding-bottom: 1rem;
 }
 
@@ -16,8 +14,7 @@ body {
 }
 
 .row {
-    padding: 1rem;
-    padding-left: 2rem;
+    margin: 0;
 }
 
 .list-group-item {
@@ -609,6 +606,11 @@ body {
     display: block;
 }
 
+.container {
+    margin: 1px;
+    padding: 0;
+}
+
 @media screen and (min-width: 768px) {
     .navbar {
         display: flex;
@@ -639,9 +641,7 @@ body {
     .nav-links:hover {
         color: rgba(255, 255, 255, 1);
     }
-}
-
-.container {
-    margin: 1rem;
-    padding: 1rem;
+    .container {
+        max-width: 300px;
+    }
 }

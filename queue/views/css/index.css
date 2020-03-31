@@ -499,6 +499,7 @@ ul li:before {
     width: 50px;
     height: 50px;
     border-radius: 25px 0;
+    padding-top: 1px;
     cursor: pointer;
     -webkit-transition: inherit;
     transition: inherit;
@@ -629,14 +630,18 @@ body {
     .nav-links:hover {
         color: rgba(255, 255, 255, 1);
     }
+    .c-services__item:after {
+        width: 30px;
+        height: 30px;
+    }
 }
 
 p {
-    margin-bottom: 1em;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .container {
-    margin: 1rem;
-    padding: 2rem;
-    padding-left: 3rem;
+    margin: 0;
+    padding: 1em;
 }

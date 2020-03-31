@@ -13,7 +13,7 @@ mongoose.connect(mongo_uri)
 
 const consolidate = require('consolidate');
 const exphbs = require('express-handlebars');
-const async = require('async')
+
 const keys = require('./config/keys');
 
 

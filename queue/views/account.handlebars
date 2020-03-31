@@ -6,10 +6,10 @@
 <img src="{{ user.photos }}">  --}}
 
 <div class="container">
-    <div class=" card" style="background: transparent; border: 0px;">
+    <div class="card" style="background: transparent; border: 0px;">
         <div class="row" style="margin: 15px;">
             <img class="card-img-top " src="{{ passport.photos }}" style="width: 25%; " alt="User Profile">
-            <div class="card-body" style="color: black;">
+            <div class="card-body">
                 <p>ID: {{ passport.id }}</p>
                 <p>Profile:
                     <a href="{{ passport.profileUrl }}">{{ passort.profileUrl }}</a>
@@ -17,19 +17,19 @@
             </div>
         </div>
     </div>
-
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-            <ul>
-                <div class="col-title">Friends: </div>
-                {{#each friends}}
-                    <li class="list-group-item">
-                        <div class="lead"><a href="/friends/{{this.friendId}}">{{this.friendName}}</a></div>
-                    </li>
-                {{/each}}
-            </ul>
-        </div>
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-title">Friends: </div>
+        <ul>
+            {{#each friends}}
+                <li class="list-group-item">
+                    <div class="lead"><a href="/friends/{{this.friendId}}">{{this.friendName}}</a></div>
+                </li>
+            {{/each}}
+        </ul>
     </div>
+    </div>
+    
 
     <div class="request">
         <div class="title">Friend Request:</div>

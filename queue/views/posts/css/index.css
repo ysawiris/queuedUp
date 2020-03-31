@@ -603,6 +603,11 @@ body {
     display: block;
 }
 
+.container {
+    margin: 0;
+    padding: 0;
+}
+
 @media screen and (min-width: 768px) {
     .navbar {
         display: flex;
@@ -633,9 +638,7 @@ body {
     .nav-links:hover {
         color: rgba(255, 255, 255, 1);
     }
-}
-
-.container {
-    margin: 1rem;
-    padding: 1rem;
+    .container {
+        max-width: 300px;
+    }
 }
