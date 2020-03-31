@@ -1,18 +1,20 @@
-<h2>Search Friends</h2>
-<form action="/search" method="post">
-	<input type="text" name="searchfriend" placeholder="username">
-	<input type="submit" value="search">
-</form>
-<hr>
-	
-	{{#each result}}
-	<div class="usercard col-lg-3">
-		<img class="card-img-top " src="{{ this.photo }}" style="width: 25%; " alt="User Profile">
-		<p class="usercard-username">@({{this.username}})</p>
-		<form action="" method="get" class="add_friend">
-            <input type="hidden" name="receiverName" class="receiverName" value="{{this.username}}">
-            <input type="hidden" name="sender-name" class="sender-name" value="{{user.username}}">
-            <button type="submit" id="" onclick="addFriend('{{this.username}}')" class="btn btn-success add accept friend-add"><i class="fa fa-user"></i> Add Friend</button>
-        </form>
-	</div>
-	{{/each}}
+<div class="container">
+	<h2>Search Friends</h2>
+	<form action="/search" method="post">
+		<input type="text" name="searchfriend" placeholder="username">
+		<input type="submit" value="search">
+	</form>
+	<hr>
+		
+		{{#each result}}
+		<div class="usercard col-lg-3">
+			<img class="card-img-top " src="{{ this.photo }}" style="width: 25%; " alt="User Profile">
+			<p class="usercard-username">@({{this.username}})</p>
+			<form action="" method="get" class="add_friend">
+				<input type="hidden" name="receiverName" class="receiverName" value="{{this.username}}">
+				<input type="hidden" name="sender-name" class="sender-name" value="{{user.username}}">
+				<button type="submit" id="" onclick="addFriend('{{this.username}}')" class="btn btn-success add accept friend-add"><i class="fa fa-user"></i> Add Friend</button>
+			</form>
+		</div>
+		{{/each}}
+</div>

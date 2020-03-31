@@ -640,3 +640,8 @@ body {
         color: rgba(255, 255, 255, 1);
     }
 }
+
+.container {
+    margin: 1rem;
+    padding: 1rem;
+}

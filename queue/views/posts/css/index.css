@@ -10,6 +10,10 @@ body {
     padding-bottom: 1rem;
 }
 
+.row {
+    margin: 1rem;
+}
+
 .list-group-item {
     padding: 10rem;
     padding-top: 1rem;
@@ -629,4 +633,9 @@ body {
     .nav-links:hover {
         color: rgba(255, 255, 255, 1);
     }
+}
+
+.container {
+    margin: 1rem;
+    padding: 1rem;
 }

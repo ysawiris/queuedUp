@@ -1,20 +1,22 @@
-{{#if user}}
-<div class="row">
-    <div class="col-sm-4 col-sm-offset-4">
-        <form action="/posts/new" method="post">
-            <legend>Contact Us</legend>
-            <div class="form-group">
-                <label for="post-title">Type</label>
-                <input type="text" name="title" class="form-control" id="post-title" placeholder="is a review, suggestion, or bug">
-            </div>
-            <div class="form-group">
-                <label for="post-summary">Summary</label>
-                <textarea name="summary" class="form-control" id="post-summary" placeholder="...tell us whats going on"></textarea>
-            </div>
-            <div class='text-right'>
-                <button type="submit" class="btn btn-primary">Sumbit</button>
-            </div>
-        </form>
+<div class="container">
+    {{#if user}}
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <form action="/posts/new" method="post">
+                <legend>Contact Us</legend>
+                <div class="form-group">
+                    <label for="post-title">Type</label>
+                    <input type="text" name="title" class="form-control" id="post-title" placeholder="is a review, suggestion, or bug">
+                </div>
+                <div class="form-group">
+                    <label for="post-summary">Summary</label>
+                    <textarea name="summary" class="form-control" id="post-summary" placeholder="...tell us whats going on"></textarea>
+                </div>
+                <div class='text-right'>
+                    <button type="submit" class="btn btn-primary">Sumbit</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {{/if}}
+</div>
