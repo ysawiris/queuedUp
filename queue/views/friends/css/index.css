@@ -641,7 +641,4 @@ body {
     .nav-links:hover {
         color: rgba(255, 255, 255, 1);
     }
-    .container {
-        max-width: 300px;
-    }
 }

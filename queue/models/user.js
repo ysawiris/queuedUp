@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     username: { type: String, required: true },
-    photo: { type: String, required: true },
+    photo: { type: String },
     spotifyId: { type: String, required: true },
     spotifyToken: { type: String, required: true },
     sentRequest: [{

@@ -18,16 +18,22 @@
         </div>
     </div>
     <div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <div class="col-title">Friends: </div>
-        <ul>
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-title">Friends: </div>
+            {{#if friends}}
+                <ul>
             {{#each friends}}
-                <li class="list-group-item">
-                    <div class="lead"><a href="/friends/{{this.friendId}}">{{this.friendName}}</a></div>
-                </li>
+                    <li class="list-group-item">
+                        <div class="lead"><a href="/friends/{{this.friendId}}">{{this.friendName}}</a></div>
+                    </li>
             {{/each}}
-        </ul>
-    </div>
+                </ul>
+            {{else}}
+                <div>
+                    <h4 style="text-align:center">No Friends, Go ADD them now!</h4>
+                </div>
+            {{/if}}        
+        </div>
     </div>
     
 

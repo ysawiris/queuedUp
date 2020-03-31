@@ -11,14 +11,17 @@ module.exports = (app, ensureAuthenticated) => {
             .then(user => {
                 console.log(`${user}`)
                 console.log(user.friendsList[0].friendName)
-                User.findOne({ 'username': user.friendsList[0].friendName })
-                    .then(usersFriend => {
-                        console.log(usersFriend.spotifyToken)
-                        res.render("account", { user, newfriend: user.request, passport: req.user, usersFriend });
+                if (user.friendsList[0]) {
+                    User.findOne({ 'username': user.friendsList[0].friendName })
+                        .then(usersFriend => {
+                            console.log(usersFriend.spotifyToken)
+                            res.render("account", { user, newfriend: user.request, passport: req.user, usersFriend });
 
-                    })
-                    // console.log(req.user)
-                    // res.render("account", { user, newfriend: user.request, passport: req.user });
+                        })
+                } else {
+                    console.log(req.user)
+                    res.render("account", { user, newfriend: user.request, passport: req.user });
+                }
             })
             .catch(err => {
                 console.log(err.message);
