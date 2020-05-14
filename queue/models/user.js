@@ -15,7 +15,8 @@ const UserSchema = new Schema({
     }],
     friendsList: [{
         friendId: { type: Schema.Types.ObjectId, ref: 'User' },
-        friendName: { type: String, default: '' }
+        friendName: { type: String, default: '' },
+        // access: { type: Boolean, default: False }
     }],
     totalRequest: { type: Number, default: 0 }
 });

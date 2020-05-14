@@ -6,9 +6,9 @@ const express = require('express'),
 
 var path = require('path');
 
-const mongoose = require('mongoose')
-const mongo_uri = process.env.MONGODB_URI
-mongoose.connect(mongo_uri)
+// const mongoose = require('mongoose')
+// const mongo_uri = process.env.MONGODB_URI
+// mongoose.connect(mongo_uri)
 
 
 const consolidate = require('consolidate');
@@ -57,8 +57,8 @@ passport.use(
     new SpotifyStrategy({
             clientID: keys.spotify.clientID,
             clientSecret: keys.spotify.clientSecret,
-            callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-                // callbackURL: 'http://localhost:3000/callback'
+            // callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
+            callbackURL: 'http://localhost:8080/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
             // asynchronous verification, for effect...
@@ -192,15 +192,20 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+//health check 
+app.get('/healthcheck', function(req, res) {
+    res.json({ status: 'UP' });
+});
+
 // Set Port
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 8080));
 
 // app.listen(app.get('port'), function(){
 // 	console.log('Server started on port '+app.get('port'));
 // });
 
 server.listen(app.get('port'), function() {
-    console.log('listening on port 3000');
+    console.log('listening on port 8080');
 });
 
 // Simple route middleware to ensure user is authenticated.
