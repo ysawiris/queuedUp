@@ -3,7 +3,7 @@ services:
     mongo:
         image: mongo
         volumes: 
-            - ./testdata:/data/db
+            - ./data:/data/db
         ports:
             - "27017:27017"
     web:
