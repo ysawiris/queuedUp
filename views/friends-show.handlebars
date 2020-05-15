@@ -1,0 +1,24 @@
+<div class="card" style="background: transparent; border: 0px;">
+    <div class="row" style="margin: 15px;">
+        <img class="card-img-top " src="{{ frienduser.photo }}" style="width: 25%; " alt="User Profile">
+        <div class="card-body" style="color: black;">
+        </div>
+    </div>
+</div>
+
+<div class="search">
+    <h3>Search Songs</h3>
+    <input type="text" name="song" id="song">
+    <input type="hidden" name="user_token1" id="user_token1" value="{{ user.spotifyToken }}">
+    <button type="submit" id="song_search" class="btn btn-primary" style="width: 8em">Accept</button>
+</div>
+
+
+<div>
+    <input class="change_song" type="hidden" name="friend_token" id="friend_token" value="{{ frienduser.spotifyToken }}">
+</div>
+
+<div class="col-sm-8" id="el">
+
+    
+</div>

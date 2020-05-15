@@ -1,0 +1,47 @@
+{{!-- {{#if user}}
+<h2>Hello, {{ user.username }}.</h2> --}}
+<section class="c-section">
+{{#if user}}
+  <h2 class="c-section__title"><span>Hello, {{ user.username }}!</span></h2>
+{{else}}
+  <h2 class="c-section__title"><span>How it works!</span></h2>
+{{/if}}
+  <ul class="c-services">
+    <li class="c-services__item">
+      <h3>Find Your Friends</h3>
+      <p>You cant add songs to your friend's queue if you dont make your friendship offical! Go to Search Friends and add your friends!</p>
+    </li>
+    <li class="c-services__item">
+      <h3>Accept Friend Requests</h3>
+      <p>Think you have a friend request? Go check out Friends and see if you have a pending request! If you have sent a friend request go to Friends and see if they accepted your friend request!</p>
+    </li>
+    <li class="c-services__item">
+      <h3>Add Songs to your Friend's Spotify Queue</h3>
+      <p>Go to friends and select the friend you want. Then search for the song you want and click 'Add'. Its that simple!</p>
+    </li>
+    <li class="c-services__item">
+      <h3>Things you need to know!</h3>
+      <p>For security purposes, your friend has to login to Queued Up atleast 1 hour before to accept song additons from friends!</p>
+      <p>IMPORTANT: Your friend has to be currently playing music on Spotify to accept new songs.</p>
+    </li>
+    <li class="c-services__item">
+      <h3>Future Plans & Features</h3>
+      <p>We want reach more customers! Features like automatic refresh token. Check back for more Updates!</p>
+    </li>
+    <li class="c-services__item">
+      <h3>We want to hear from you!</h3>
+      <p>Queued Up is determined to helping people out and making their lives eaiser! Let us know what we can do better!</p>
+    </li>
+  </ul>
+</section>
+{{!-- 
+{{else}}
+<div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron container">
+        <img class="header-image" src='/static/QueuedUP-logo1.png' alt="logo" style="max-width: 375px; max-height: 600px;">
+        <a href="/auth/spotify" class="btn btn-primary navbar-btn">Login With Spotify</a>
+        <p class="lead" style="text-align: center; padding: 1rem; color: lightslategrey; font-family: 'Montserrat', sans-serif;">Adding song to your friend's Spotify queue was never this EASY!</p>
+    </div>
+</div>
+{{/if}} --}}
+

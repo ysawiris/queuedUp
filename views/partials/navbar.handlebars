@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href='/'>
+        <img class="header-image" src='/static/QueuedUP.png' alt="logo" style="max-height: 100px; max-width: 100px;">
+    </a> 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+        {{#if user}}
+            <a href="/friends" class="nav-links">Friends</a>
+            <a href="/search" class="nav-links">Add Friends</a>
+            <a href="/posts/new" class="nav-links">Contact Us</a>
+            <a href="/logout" class="nav-links">Log Out</a>
+        {{else}}
+            <a href="/auth/spotify" class="nav-links">Login With Spotify</a>
+        {{/if}}
+        </div>
+    </div>
+</nav>
