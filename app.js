@@ -58,7 +58,7 @@ passport.use(
             clientID: keys.spotify.clientID,
             clientSecret: keys.spotify.clientSecret,
             // callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-            callbackURL: 'http://localhost:8080/callback'
+            callbackURL: 'https://queuedup.testsite.yoyos.club/callback'
         },
         function(accessToken, refreshToken, expires_in, profile, done) {
             // asynchronous verification, for effect...
