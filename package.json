@@ -23,6 +23,6 @@
         "dev": "nodemon app.js"
     },
     "devDependencies": {
-        "handlebars": "^4.5.0"
+        "handlebars": "^4.5.3"
     }
 }
