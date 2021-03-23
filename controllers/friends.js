@@ -2,21 +2,33 @@ const User = require("../models/user");
 var async = require("async");
 const { response } = require("express");
 const { name } = require("ejs");
+const { compile } = require("handlebars");
 
 module.exports = (app, ensureAuthenticated) => {
 	app.get("/user-search", ensureAuthenticated, (req, res) => {
 		User.find({ username: { $ne: req.user.username } }, function (err, users) {
 			if (err) throw err;
-			var userMap = {};
+			var userMap = [];
 
-			users.forEach(function (user) {
-				userMap["name"] = user.username;
-				userMap["photo"] = user.photo;
-				userMap["spotifyId"] = user.spotifyId;
-			});
+			for (index = 0; index < users.length; ++index) {
+				userMap.push({
+					name: users[index].username,
+					photo: users[index].photo,
+				});
+			}
 
-			res.send([userMap]);
+			console.log(userMap);
+			res.send(userMap);
 		});
+	});
+	app.get("/current-user", ensureAuthenticated, (req, res) => {
+		if (req.user === undefined) {
+			// The user is not logged in
+			res.json({});
+		} else {
+			console.log("USER", req.user);
+			res.json(req.user);
+		}
 	});
 	app.get("/search", ensureAuthenticated, (req, res) => {
 		var sent = [];
