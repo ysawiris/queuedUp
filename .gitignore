@@ -1,3 +1,22 @@
-node_modules
-config/keys.js
+node_modules/
 .env
+.env.local
+.env.*.local
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+.vscode/
+.idea/
+
+# Local mongo data — never commit
+data/db/
+data/*.wt
+data/_mdb_catalog.wt
+data/journal/
+data/diagnostic.data/
+data/mongod.lock
+data/storage.bson
+data/sizeStorer.wt
+data/WiredTiger*

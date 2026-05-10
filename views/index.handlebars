@@ -1,47 +1,107 @@
-{{!-- {{#if user}}
-<h2>Hello, {{ user.username }}.</h2> --}}
-<section class="c-section">
-{{#if user}}
-  <h2 class="c-section__title"><span>Hello, {{ user.username }}!</span></h2>
-{{else}}
-  <h2 class="c-section__title"><span>How it works!</span></h2>
-{{/if}}
-  <ul class="c-services">
-    <li class="c-services__item">
-      <h3>Find Your Friends</h3>
-      <p>You cant add songs to your friend's queue if you dont make your friendship offical! Go to Search Friends and add your friends!</p>
-    </li>
-    <li class="c-services__item">
-      <h3>Accept Friend Requests</h3>
-      <p>Think you have a friend request? Go check out Friends and see if you have a pending request! If you have sent a friend request go to Friends and see if they accepted your friend request!</p>
-    </li>
-    <li class="c-services__item">
-      <h3>Add Songs to your Friend's Spotify Queue</h3>
-      <p>Go to friends and select the friend you want. Then search for the song you want and click 'Add'. Its that simple!</p>
-    </li>
-    <li class="c-services__item">
-      <h3>Things you need to know!</h3>
-      <p>For security purposes, your friend has to login to Queued Up atleast 1 hour before to accept song additons from friends!</p>
-      <p>IMPORTANT: Your friend has to be currently playing music on Spotify to accept new songs.</p>
-    </li>
-    <li class="c-services__item">
-      <h3>Future Plans & Features</h3>
-      <p>We want reach more customers! Features like automatic refresh token. Check back for more Updates!</p>
-    </li>
-    <li class="c-services__item">
-      <h3>We want to hear from you!</h3>
-      <p>Queued Up is determined to helping people out and making their lives eaiser! Let us know what we can do better!</p>
-    </li>
-  </ul>
+<section class="container hero fade-in">
+	<span class="hero__eyebrow"><span class="dot"></span> Live with the Spotify Web API</span>
+	<h1 class="hero__title">
+		{{#if user}}
+			Welcome back, <span class="grad">{{user.username}}</span>
+		{{else}}
+			Be your friends' <span class="grad">in‑app DJ</span>.
+		{{/if}}
+	</h1>
+	<p class="hero__lead">
+		{{#if user}}
+			Queue up the next track on a friend's Spotify in one tap. Tap into your circle below.
+		{{else}}
+			Queued Up connects to Spotify so you can drop songs straight into a friend's playback queue. No file sharing, no playlists — just real‑time taste.
+		{{/if}}
+	</p>
+	<div class="hero__cta">
+		{{#if user}}
+			<a href="/friends" class="btn btn--primary btn--lg">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+				Open friends
+			</a>
+			<a href="/search" class="btn btn--ghost btn--lg">Discover people</a>
+		{{else}}
+			<a href="/auth/spotify" class="btn btn--primary btn--lg">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.56.3z"/></svg>
+				Continue with Spotify
+			</a>
+			<a href="#how" class="btn btn--ghost btn--lg">How it works</a>
+		{{/if}}
+	</div>
 </section>
-{{!-- 
-{{else}}
-<div class="jumbotron jumbotron-fluid">
-    <div class="jumbotron container">
-        <img class="header-image" src='/static/QueuedUP-logo1.png' alt="logo" style="max-width: 375px; max-height: 600px;">
-        <a href="/auth/spotify" class="btn btn-primary navbar-btn">Login With Spotify</a>
-        <p class="lead" style="text-align: center; padding: 1rem; color: lightslategrey; font-family: 'Montserrat', sans-serif;">Adding song to your friend's Spotify queue was never this EASY!</p>
-    </div>
-</div>
-{{/if}} --}}
 
+<section id="how" class="container section">
+	<div class="section__head">
+		<div>
+			<h2 class="section__title">How it works</h2>
+			<p class="section__lead">Four steps, ninety seconds. Then your friends are at your mercy.</p>
+		</div>
+	</div>
+
+	<div class="features">
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+			</div>
+			<h3>1 · Sign in with Spotify</h3>
+			<p>One‑tap OAuth. We only ask for the scopes we need to read your profile and push to the queue.</p>
+		</article>
+
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+			</div>
+			<h3>2 · Find your people</h3>
+			<p>Search by name, send a request, and they're in your circle as soon as they accept.</p>
+		</article>
+
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+			</div>
+			<h3>3 · Pick the perfect track</h3>
+			<p>Search the entire Spotify catalog from inside Queued Up and preview before you commit.</p>
+		</article>
+
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+			</div>
+			<h3>4 · Drop it in their queue</h3>
+			<p>The song lands in their Spotify queue instantly. They keep listening — you control what's next.</p>
+		</article>
+	</div>
+</section>
+
+<section class="container section">
+	<div class="section__head">
+		<div>
+			<h2 class="section__title">Things to know</h2>
+			<p class="section__lead">A few caveats so the magic doesn't break.</p>
+		</div>
+	</div>
+	<div class="features">
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+			</div>
+			<h3>Spotify Premium required</h3>
+			<p>The Spotify Web API only allows queue mutations for Premium accounts. That's a Spotify limit, not ours.</p>
+		</article>
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+			</div>
+			<h3>They need to be playing</h3>
+			<p>Your friend has to be actively listening on a Spotify device for the queue addition to land.</p>
+		</article>
+		<article class="feature">
+			<div class="feature__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+			</div>
+			<h3>Tokens refresh daily</h3>
+			<p>Spotify access tokens expire after about an hour. If a friend hasn't logged in lately, ask them to pop in.</p>
+		</article>
+	</div>
+</section>

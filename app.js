@@ -1,169 +1,134 @@
-const express = require("express"),
-	session = require("express-session"),
-	passport = require("passport"),
-	swig = require("swig"),
-	SpotifyStrategy = require("./lib/passport-spotify/index").Strategy;
+require("dotenv").config();
 
-var path = require("path");
-
-// const mongoose = require("mongoose");
-// const mongo_uri = process.env.MONGODB_URI;
-// mongoose.connect(mongo_uri);
-
-const consolidate = require("consolidate");
+const path = require("path");
+const http = require("http");
+const express = require("express");
+const session = require("express-session");
+const passport = require("passport");
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 const exphbs = require("express-handlebars");
+const { Server: SocketIOServer } = require("socket.io");
 
-const keys = require("./config/keys");
+const SpotifyStrategy = require("./lib/passport-spotify").Strategy;
+const User = require("./models/user");
+const connectDb = require("./data/queue-db");
 
-var http = require("http");
+const PORT = process.env.PORT || 8080;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const SPOTIFY_CALLBACK_URL =
+	process.env.SPOTIFY_CALLBACK_URL || `http://localhost:${PORT}/callback`;
 
-var socketIO = require("socket.io");
-
-const bodyParser = require("body-parser");
-const expressValidator = require("express-validator");
+if (!SESSION_SECRET) {
+	throw new Error("SESSION_SECRET must be set in the environment.");
+}
+if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+	throw new Error(
+		"SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be set in the environment."
+	);
+}
 
 const app = express();
 
-const User = require("./models/user");
-// Use Body Parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+	helmet({
+		contentSecurityPolicy: false,
+	})
+);
+app.use(compression());
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Add after body parser initialization!
-app.use(expressValidator());
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
 
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session. Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing. However, since this example does not
-//   have a database of user records, the complete spotify profile is serialized
-//   and deserialized.
-passport.serializeUser(function (user, done) {
-	done(null, user);
-});
-
-passport.deserializeUser(function (obj, done) {
-	done(null, obj);
-});
-
-// Use the SpotifyStrategy within Passport.
-//   Strategies in Passport require a `verify` function, which accept
-//   credentials (in this case, an accessToken, refreshToken, expires_in
-//   and spotify profile), and invoke a callback with a user object.
 passport.use(
 	new SpotifyStrategy(
 		{
-			clientID: keys.spotify.clientID,
-			clientSecret: keys.spotify.clientSecret,
-			// callbackURL: 'https://queuedup-v1.herokuapp.com/callback'
-			// callbackURL: 'https://queuedup.testsite.yoyos.club/callback'
-			callbackURL: "http://localhost:8080/callback",
+			clientID: SPOTIFY_CLIENT_ID,
+			clientSecret: SPOTIFY_CLIENT_SECRET,
+			callbackURL: SPOTIFY_CALLBACK_URL,
 		},
-		function (accessToken, refreshToken, expires_in, profile, done) {
-			// asynchronous verification, for effect...
-			process.nextTick(function () {
-				// To keep the example simple, the user's spotify profile is returned to
-				// represent the logged-in user. In a typical application, you would want
-				// to associate the spotify account with a user record in your database,
-				// and return that user instead.
-				User.findOne({ spotifyId: profile.id }).then((currentUser) => {
-					if (currentUser) {
-						//already have the user
-						console.log("user is: ", currentUser);
-						console.log(profile);
-						console.log(accessToken);
-						console.log(expires_in);
-						currentUser.spotifyToken = accessToken;
-						currentUser.photo = profile.photos[0];
-						currentUser.save();
-						// profile.friendsList = currentUser.friendsList
-						// profile.sentRequest = currentUser.sentRequest
-						// profile.request = currentUser.request
-						// profile.totalRequest = currentUser.totalRequest
-					} else {
-						new User({
-							username: profile.displayName,
-							photo: profile.photos[0],
-							spotifyId: profile.id,
-							spotifyToken: accessToken,
-						})
-							.save()
-							.then((newUser) => {
-								console.log("new user created:" + newUser);
-								// profile.friendsList = newUser.friendsList
-								// profile.sentRequest = newUser.sentRequest
-								// profile.request = newUser.request
-								// profile.totalRequest = newUser.totalRequest
-							});
-					}
-				});
+		async (accessToken, refreshToken, expires_in, profile, done) => {
+			try {
+				const photo = profile.photos && profile.photos[0];
+				const existing = await User.findOne({ spotifyId: profile.id });
+
+				if (existing) {
+					existing.spotifyToken = accessToken;
+					if (photo) existing.photo = photo;
+					await existing.save();
+				} else {
+					await new User({
+						username: profile.displayName || profile.id,
+						photo,
+						spotifyId: profile.id,
+						spotifyToken: accessToken,
+					}).save();
+				}
 				return done(null, profile);
-			});
+			} catch (err) {
+				return done(err);
+			}
 		}
 	)
 );
 
-const server = http.createServer(app);
-const io = socketIO(server);
-
-require("./socket/friend")(io);
-
-// View Engine
-app.set("views", path.join(__dirname, "views"));
 app.engine(
 	"handlebars",
-	exphbs({
+	exphbs.engine({
+		defaultLayout: "main",
 		helpers: {
-			ifIn: function (elem, list, options) {
-				if (list.indexOf(elem) > -1) {
+			ifIn(elem, list, options) {
+				if (Array.isArray(list) && list.indexOf(elem) > -1) {
 					return options.fn(this);
 				}
 				return options.inverse(this);
 			},
 		},
-		defaultLayout: "main",
 	})
 );
 app.set("view engine", "handlebars");
+app.set("views", path.join(__dirname, "views"));
 
 app.use(
-	session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
+	session({
+		secret: SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			httpOnly: true,
+			sameSite: "lax",
+			secure: process.env.NODE_ENV === "production",
+			maxAge: 1000 * 60 * 60 * 24 * 7,
+		},
+	})
 );
-// Initialize Passport!  Also use passport.session() middleware, to support
-// persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Set Static Folder
-app.use(express.static(path.join(__dirname, "/views")));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/static", express.static(path.join(__dirname, "views/static")));
 
-app.use(express.static(path.join(__dirname, "/config")));
+require("./controllers/posts")(app, ensureAuthenticated);
+require("./controllers/friends")(app, ensureAuthenticated);
+require("./controllers/queue_friends")(app, ensureAuthenticated);
 
-app.engine("html", consolidate.swig);
+connectDb();
 
-//Link Controllers
-require("./controllers/posts.js")(app, ensureAuthenticated);
-require("./controllers/friends.js")(app, ensureAuthenticated);
-require("./controllers/queue_friends.js")(app, ensureAuthenticated);
-
-// Set db
-require("./data/queue-db");
-
-app.get("/", function (req, res) {
-	console.log("i made to the index");
+app.get("/", (req, res) => {
 	res.render("index", { user: req.user });
 });
 
-app.get("/login", function (req, res) {
+app.get("/login", (req, res) => {
+	if (req.user) return res.redirect("/");
 	res.render("login", { user: req.user });
 });
 
-// GET /auth/spotify
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request. The first step in spotify authentication will involve redirecting
-//   the user to spotify.com. After authorization, spotify will redirect the user
-//   back to this application at /auth/spotify/callback
 app.get(
 	"/auth/spotify",
 	passport.authenticate("spotify", {
@@ -173,56 +138,50 @@ app.get(
 			"user-modify-playback-state",
 		],
 		showDialog: true,
-	}),
-	function (req, res) {
-		// The request will be redirected to spotify for authentication, so this
-		// function will not be called.
-	}
+	})
 );
 
-// GET /auth/spotify/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request. If authentication fails, the user will be redirected back to the
-//   login page. Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
 app.get(
 	"/callback",
 	passport.authenticate("spotify", { failureRedirect: "/login" }),
-	function (req, res) {
-		console.log("in the callback function");
-		res.redirect("/");
-	}
+	(req, res) => res.redirect("/")
 );
 
-app.get("/logout", function (req, res) {
-	req.logout();
-	res.redirect("/");
+app.get("/logout", (req, res, next) => {
+	req.logout((err) => {
+		if (err) return next(err);
+		res.redirect("/");
+	});
 });
 
-//health check
-app.get("/healthcheck", function (req, res) {
-	res.json({ status: "UP" });
+app.get("/healthcheck", (req, res) => res.json({ status: "UP" }));
+
+app.use((req, res) => {
+	res.status(404).render("error", {
+		user: req.user,
+		code: 404,
+		message: "We couldn't find that page.",
+	});
 });
 
-// Set Port
-app.set("port", process.env.PORT || 8080);
-
-// app.listen(app.get('port'), function(){
-// 	console.log('Server started on port '+app.get('port'));
-// });
-
-server.listen(app.get("port"), function () {
-	console.log("listening on port 8080");
+app.use((err, req, res, _next) => {
+	console.error(err);
+	res.status(500).render("error", {
+		user: req.user,
+		code: 500,
+		message: "Something went wrong on our end.",
+	});
 });
 
-// Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed. Otherwise, the user will be redirected to the
-//   login page.
+const server = http.createServer(app);
+const io = new SocketIOServer(server);
+require("./socket/friend")(io);
+
+server.listen(PORT, () => {
+	console.log(`Queued Up listening on port ${PORT}`);
+});
+
 function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/");
+	if (req.isAuthenticated()) return next();
+	res.redirect("/login");
 }

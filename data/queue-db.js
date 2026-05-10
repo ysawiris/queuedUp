@@ -1,29 +1,24 @@
-/* Mongoose Connection */
 const mongoose = require("mongoose");
-assert = require("assert");
 
-const url = "mongodb://localhost:27017/queue-db";
-mongoose.Promise = global.Promise;
+const MONGO_URI =
+	process.env.MONGODB_URI || "mongodb://localhost:27017/queue-db";
 
-let connect = () => {
-	console.log("attempting connection");
-	mongoose.connect(
-		url,
-		{ useNewUrlParser: true, useUnifiedTopology: true },
-		function (err, db) {
-			assert.equal(null, err);
-			console.log("Connected successfully to database");
+async function connectDb() {
+	try {
+		await mongoose.connect(MONGO_URI);
+		console.log("MongoDB connected:", mongoose.connection.name);
+	} catch (err) {
+		console.error("MongoDB connection error:", err.message);
+		process.exit(1);
+	}
 
-			// db.close(); turn on for testing
-		}
-	);
-	mongoose.connection.on(
-		"error",
-		console.error.bind(console, "MongoDB connection Error:")
-	);
-	mongoose.set("debug", true);
-};
+	mongoose.connection.on("error", (err) => {
+		console.error("MongoDB error:", err.message);
+	});
 
-let timeout = setTimeout(connect, 1000);
+	mongoose.connection.on("disconnected", () => {
+		console.warn("MongoDB disconnected");
+	});
+}
 
-module.exports = mongoose.connection;
+module.exports = connectDb;

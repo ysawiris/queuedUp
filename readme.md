@@ -1,60 +1,63 @@
-# QueuedUp API
+# Queued Up
 
-This API will allow you to add song to your friends Spotify queue!
+Add songs to your friends' Spotify queue in real time.
 
-## Getting Started
+A Node.js + Express + Socket.IO + MongoDB app with Spotify OAuth and a
+modern dark UI.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## Quick start
 
-### Prerequisites
+```bash
+cp .env.example .env
+# fill in SESSION_SECRET, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 
-```
-$ node.js
-```
-Don't forget to install the necessesry modules which include: express, handlebars, etc.
-
-### Installing
-
-For example to install express type the command
-
-
-```
-$ npm install express --save
+npm install
+npm run dev
 ```
 
-If express handlebars are not rendering then try
+Open <http://localhost:8080>.
 
-```
-$ npm i -D handlebars@4.5.0
-```
+You'll need:
+- Node.js 18+
+- A running MongoDB (`mongod` locally, or use docker-compose below)
+- A Spotify developer app — <https://developer.spotify.com/dashboard>
+  - Add `http://localhost:8080/callback` to **Redirect URIs**
 
-Create config folder
+## Docker
 
-```
-$ touch key.js
-```
-
-Add secret keys to key.js
-
-(DONT forget to add it to your .env)
-
-clientID: '?????????????????????????'
-
-clientSecret: '???????????????????????'
-
-
-Once loaded, start the server!
-
-```
-$ nodemon
+```bash
+cp .env.example .env
+docker compose up --build
 ```
 
-## Deployment
+The app boots on `:8080`, MongoDB on `:27018` (host) / `:27017` (network).
 
+## Tech
 
-http://queuedup-v1.herokuapp.com/
+- **Backend:** Express 4, express-handlebars 7, Mongoose 8, Passport (custom Spotify OAuth2 strategy), Socket.IO 4
+- **Frontend:** Vanilla JS, modern CSS (custom properties, glass morphism, gradient mesh), zero jQuery, zero Bootstrap
+- **Security:** Helmet headers, secure session cookies, `dotenv` for secrets
+- **Deploy:** Heroku (`Procfile`), CapRover (`captain-definition`), or Docker
 
+## Project layout
 
-## Authors
+```
+app.js                 — Express + Passport + Socket.IO setup
+controllers/           — route handlers
+models/                — Mongoose schemas
+data/queue-db.js       — MongoDB connection
+lib/passport-spotify/  — custom Spotify OAuth2 strategy
+public/                — static assets (css, js, images)
+views/                 — Handlebars templates
+socket/                — Socket.IO event handlers
+```
 
-Youssef Sawiris github@ysawiris
+## Notes
+
+- Spotify queue mutations require **Premium** on the receiving account.
+- Receivers must be actively playing on a Spotify device for the queue add to land.
+- Access tokens expire ~1 hour after login — friends should re-auth periodically.
+
+## Author
+
+Youssef Sawiris — [@ysawiris](https://github.com/ysawiris)

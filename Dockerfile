@@ -1,20 +1,20 @@
-
-FROM node:10
-
-# Create app directory
+FROM node:20-alpine AS base
 WORKDIR /app
+ENV NODE_ENV=production
 
-# Install app dependencies
-COPY package.json /app
+FROM base AS deps
+COPY package.json ./
+RUN npm install --omit=dev
 
-RUN npm install
-
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
-COPY . /app
+FROM base AS runner
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 EXPOSE 8080
 
-CMD [ "npm", "start" ]
+USER node
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s \
+	CMD wget -qO- http://localhost:8080/healthcheck || exit 1
+
+CMD ["node", "app.js"]

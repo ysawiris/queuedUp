@@ -1,23 +1,26 @@
-<div class="container">
-	<h2>Search Friends</h2>
-	<div class="form-group">
-		<input type="text" id="user-search" placeholder="username">
+<section class="container section fade-in">
+	<div class="section__head">
+		<div>
+			<h2 class="section__title">Discover people</h2>
+			<p class="section__lead">Search by display name. Send a request — they'll see it the next time they log in.</p>
+		</div>
 	</div>
-	<hr>
-	<div id="match-list">
 
+	<div class="search-bar">
+		<svg class="search-bar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+			<circle cx="11" cy="11" r="8"/>
+			<path d="m21 21-4.3-4.3"/>
+		</svg>
+		<input type="text" id="user-search" class="input" placeholder="Search by name" autocomplete="off" autofocus>
 	</div>
-	<div id="match-list"></div>
-	{{!-- {{#each result}}
-	<div class="usercard col-lg-3">
-		<img class="card-img-top " src="{{ this.photo }}" style="width: 25%; " alt="User Profile">
-		<p class="usercard-username">@({{this.username}})</p>
-		<form action="" method="get" class="add_friend">
-			<input type="hidden" name="receiverName" class="receiverName" value="{{this.username}}">
-			<input type="hidden" name="sender-name" class="sender-name" value="{{user.username}}">
-			<button type="submit" id="" onclick="addFriend('{{this.username}}')"
-				class="btn btn-success add accept friend-add"><i class="fa fa-user"></i> Add Friend</button>
-		</form>
+
+	<div id="match-list" class="user-grid mt-5" aria-live="polite"></div>
+
+	<div id="match-empty" class="empty" hidden>
+		<div class="empty__icon">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+		</div>
+		<h3>Start typing to find people</h3>
+		<p class="mt-2">Search will only show you people who've signed up for Queued Up.</p>
 	</div>
-	{{/each}} --}}
-</div>
+</section>

@@ -1,24 +1,41 @@
-<div class="card" style="background: transparent; border: 0px;">
-    <div class="row" style="margin: 15px;">
-        <img class="card-img-top " src="{{ frienduser.photo }}" style="width: 25%; " alt="User Profile">
-        <div class="card-body" style="color: black;">
-        </div>
-    </div>
-</div>
+<section class="container section fade-in">
+	<a href="/friends" class="muted" style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px; font-size: 0.9rem;">
+		<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+		Back to friends
+	</a>
 
-<div class="search">
-    <h3>Search Songs</h3>
-    <input type="text" name="song" id="song">
-    <input type="hidden" name="user_token1" id="user_token1" value="{{ user.spotifyToken }}">
-    <button type="submit" id="song_search" class="btn btn-primary" style="width: 8em">Accept</button>
-</div>
+	<header class="profile-head">
+		<span class="avatar avatar--xl avatar--ring">
+			{{#if frienduser.photo}}
+				<img src="{{frienduser.photo}}" alt="{{frienduser.username}}">
+			{{/if}}
+		</span>
+		<div>
+			<p class="muted" style="font-size: 0.85rem; margin: 0 0 6px;">Sending to</p>
+			<h1 class="profile-head__name">{{frienduser.username}}</h1>
+			<p class="profile-head__sub">Find a song below — it'll land in their queue.</p>
+		</div>
+	</header>
 
+	<input type="hidden" id="friend_token" value="{{frienduser.spotifyToken}}">
+	<input type="hidden" id="user_token1" value="{{user.spotifyToken}}">
 
-<div>
-    <input class="change_song" type="hidden" name="friend_token" id="friend_token" value="{{ frienduser.spotifyToken }}">
-</div>
+	<div class="search-bar">
+		<svg class="search-bar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+			<path d="M9 18V5l12-2v13"/>
+			<circle cx="6" cy="18" r="3"/>
+			<circle cx="18" cy="16" r="3"/>
+		</svg>
+		<input type="text" id="song" class="input" placeholder="Search Spotify — song or artist" autocomplete="off">
+	</div>
 
-<div class="col-sm-8" id="el">
+	<div id="song-results" class="song-list mt-5" aria-live="polite"></div>
 
-    
-</div>
+	<div id="song-empty" class="empty">
+		<div class="empty__icon">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+		</div>
+		<h3>What are we adding?</h3>
+		<p class="mt-2">Type a track or artist name to search Spotify.</p>
+	</div>
+</section>
