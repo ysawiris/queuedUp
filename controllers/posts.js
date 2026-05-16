@@ -1,4 +1,4 @@
-const Post = require("../models/post");
+const { createPost, listPosts } = require("../data/redis");
 
 module.exports = (app, ensureAuthenticated) => {
 	app.get("/posts/new", ensureAuthenticated, (req, res) => {
@@ -7,12 +7,10 @@ module.exports = (app, ensureAuthenticated) => {
 
 	app.post("/posts/new", ensureAuthenticated, async (req, res) => {
 		try {
-			const post = new Post({
+			await createPost(req.user.id, {
 				title: req.body.title,
 				summary: req.body.summary,
-				user: req.user.id,
 			});
-			await post.save();
 			res.redirect("/posts");
 		} catch (err) {
 			console.error(err);
@@ -25,9 +23,7 @@ module.exports = (app, ensureAuthenticated) => {
 
 	app.get("/posts", ensureAuthenticated, async (req, res) => {
 		try {
-			const posts = await Post.find({ user: req.user.id })
-				.sort({ createdAt: -1 })
-				.lean();
+			const posts = await listPosts(req.user.id);
 			res.render("posts", { posts, user: req.user });
 		} catch (err) {
 			console.error(err);

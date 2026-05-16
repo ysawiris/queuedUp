@@ -1,42 +1,32 @@
-const User = require("../models/user");
+const { getUser } = require("../data/redis");
+const { loadFreshUser } = require("../lib/spotify");
 
 module.exports = (app, ensureAuthenticated) => {
-	app.get("/accounts", ensureAuthenticated, async (req, res) => {
+	const renderAccount = async (req, res) => {
 		try {
-			const user = await User.findOne({ spotifyId: req.user.id });
+			const user = await getUser(req.user.id);
 			if (!user) return res.redirect("/");
 			res.render("account", {
 				user,
-				newfriend: user.request,
+				newfriend: user.request || [],
 				passport: req.user,
-				friends: user.friendsList,
+				friends: user.friendsList || [],
 			});
 		} catch (err) {
 			console.error(err);
 			res.redirect("/");
 		}
-	});
+	};
 
-	app.get("/friends", ensureAuthenticated, async (req, res) => {
-		try {
-			const user = await User.findOne({ spotifyId: req.user.id });
-			if (!user) return res.redirect("/");
-			res.render("account", {
-				user,
-				newfriend: user.request,
-				passport: req.user,
-				friends: user.friendsList,
-			});
-		} catch (err) {
-			console.error(err);
-			res.redirect("/");
-		}
-	});
+	app.get("/accounts", ensureAuthenticated, renderAccount);
+	app.get("/friends", ensureAuthenticated, renderAccount);
 
 	app.get("/friends/:id", ensureAuthenticated, async (req, res) => {
 		try {
-			const frienduser = await User.findById(req.params.id);
-			const user = await User.findOne({ spotifyId: req.user.id });
+			// loadFreshUser refreshes Spotify tokens so the rendered
+			// friend/user tokens the client uses aren't already expired.
+			const frienduser = await loadFreshUser(req.params.id);
+			const user = await loadFreshUser(req.user.id);
 			if (!frienduser || !user) return res.redirect("/friends");
 			res.render("friends-show", {
 				user,
