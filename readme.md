@@ -34,10 +34,10 @@ The app boots on `:8080`, MongoDB on `:27018` (host) / `:27017` (network).
 
 ## Tech
 
-- **Backend:** Express 4, express-handlebars 7, Mongoose 8, Passport (custom Spotify OAuth2 strategy), Socket.IO 4
+- **Backend:** Express 5, express-handlebars 8, Mongoose 9, Passport (custom Spotify OAuth2 strategy), Socket.IO 4
 - **Frontend:** Vanilla JS, modern CSS (custom properties, glass morphism, gradient mesh), zero jQuery, zero Bootstrap
-- **Security:** Helmet headers, secure session cookies, `dotenv` for secrets
-- **Deploy:** Heroku (`Procfile`), CapRover (`captain-definition`), or Docker
+- **Security:** Helmet headers, secure session cookies, Mongo-backed session store, `trust proxy` for TLS-terminating hosts, `dotenv` for secrets
+- **Deploy:** Render (`render.yaml` blueprint), Heroku (`Procfile`), CapRover (`captain-definition`), or Docker
 
 ## Project layout
 

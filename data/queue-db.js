@@ -21,4 +21,4 @@ async function connectDb() {
 	});
 }
 
-module.exports = connectDb;
+module.exports = { connectDb, MONGO_URI };

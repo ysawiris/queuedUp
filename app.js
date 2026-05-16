@@ -10,10 +10,11 @@ const compression = require("compression");
 const morgan = require("morgan");
 const exphbs = require("express-handlebars");
 const { Server: SocketIOServer } = require("socket.io");
+const MongoStore = require("connect-mongo");
 
 const SpotifyStrategy = require("./lib/passport-spotify").Strategy;
 const User = require("./models/user");
-const connectDb = require("./data/queue-db");
+const { connectDb, MONGO_URI } = require("./data/queue-db");
 
 const PORT = process.env.PORT || 8080;
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -32,6 +33,10 @@ if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
 }
 
 const app = express();
+
+// Render terminates TLS at its proxy; trust it so secure session
+// cookies are sent and OAuth redirects resolve over https.
+app.set("trust proxy", 1);
 
 app.use(
 	helmet({
@@ -100,6 +105,7 @@ app.use(
 		secret: SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
+		store: MongoStore.create({ mongoUrl: MONGO_URI }),
 		cookie: {
 			httpOnly: true,
 			sameSite: "lax",
