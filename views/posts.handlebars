@@ -1,12 +1,32 @@
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <ul>
-        {{#each post}}
-            <li class="list-group-item">
-            <div><small>{{ this }}</small></div>
-            </li>
-        {{/each}}
-        </ul>
-    </div>
-</div>
+<section class="container section fade-in">
+	<div class="section__head">
+		<div>
+			<h2 class="section__title">Your feedback</h2>
+			<p class="section__lead">Everything you've sent us, newest first.</p>
+		</div>
+		<a href="/posts/new" class="btn btn--primary">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+			New
+		</a>
+	</div>
 
+	{{#if posts.length}}
+		<div class="stack">
+			{{#each posts}}
+				<article class="card">
+					<h3 class="card__title">{{this.title}}</h3>
+					<p class="card__lead">{{this.summary}}</p>
+					<p class="muted" style="font-size: 0.8rem; margin: 12px 0 0;">{{this.createdAt}}</p>
+				</article>
+			{{/each}}
+		</div>
+	{{else}}
+		<div class="empty">
+			<div class="empty__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+			</div>
+			<h3>No feedback yet</h3>
+			<p class="mt-2"><a href="/posts/new">Send the first one</a> — bug, idea, anything.</p>
+		</div>
+	{{/if}}
+</section>

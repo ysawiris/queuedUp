@@ -1,0 +1,13 @@
+<section class="errpage fade-in">
+	<div>
+		<p class="errpage__code">{{code}}</p>
+		<h1 class="mt-2">{{message}}</h1>
+		<p class="muted mt-3">Either the link is wrong or this page took an early exit.</p>
+		<div class="row mt-5" style="justify-content: center;">
+			<a href="/" class="btn btn--primary">Back home</a>
+			{{#if user}}
+				<a href="/friends" class="btn btn--ghost">Open friends</a>
+			{{/if}}
+		</div>
+	</div>
+</section>

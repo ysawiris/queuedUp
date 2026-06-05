@@ -1,60 +1,74 @@
-<div class="container">
-    <div class="card" style="background: transparent; border: 0px;">
-        <div class="row" style="margin: 15px;">
-            <img class="card-img-top " src="{{ passport.photos }}" style="width: 25%; " alt="User Profile">
-            <div class="card-body">
-                <p>ID: {{ passport.id }}</p>
-                <p>Profile:
-                    <a href="{{ passport.profileUrl }}">{{ passort.profileUrl }}</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="col-title">Friends: </div>
-            {{#if friends}}
-            <ul>
-                {{#each friends}}
-                <li class="list-group-item">
-                    <div class="lead"><a href="/friends/{{this.friendId}}">{{this.friendName}}</a></div>
-                </li>
-                {{/each}}
-            </ul>
-            {{else}}
-            <div>
-                <h4 style="text-align:center">No Friends, Go ADD them now!</h4>
-            </div>
-            {{/if}}
-        </div>
-    </div>
+<section class="container section fade-in">
+	<header class="profile-head">
+		<span class="avatar avatar--xl avatar--ring">
+			{{#if passport.photos.[0]}}
+				<img src="{{passport.photos.[0]}}" alt="{{passport.displayName}}">
+			{{/if}}
+		</span>
+		<div>
+			<h1 class="profile-head__name">{{passport.displayName}}</h1>
+			<p class="profile-head__sub">@{{passport.id}}{{#if passport.profileUrl}} · <a href="{{passport.profileUrl}}" rel="noopener" target="_blank">View on Spotify</a>{{/if}}</p>
+		</div>
+	</header>
 
+	<div class="section__head">
+		<div>
+			<h2 class="section__title">Friends</h2>
+			<p class="section__lead">Tap a friend to drop a track in their queue.</p>
+		</div>
+		<a class="btn btn--ghost" href="/search">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+			Add friends
+		</a>
+	</div>
 
-    <div class="request">
-        <div class="title">Friend Request:</div>
-        {{#if user.request}}
-        {{#each newfriend}}
-        <li style="border-bottom: 1px solid lightgray">
-            <div>
-                <h4>{{this.username}}</h4>
-            </div>
-            <div>
-                <div style="width: 50%; display: inline;">
-                    <input type="hidden" name="senderId" id="senderId" value="{{this.userId}}">
-                    <input type="hidden" name="senderName" id="senderName" value="{{this.username}}">
-                    <button type="submit" id="accept_friend" class="btn btn-primary" style="width: 8em">Accept</button>
-                </div>
-                <div style="width: 50%;  display: inline;">
-                    <input type="hidden" name="user_Id" id="user_Id" value="{{this.userId}}">
-                    <button type="submit" id="cancel_friend" class="btn btn-primary" style="width: 8em">Cancel</button>
-                </div>
-            </div>
-        </li>
-        {{/each}}
-        {{else}}
-        <div>
-            <h4 style="text-align:center">No requests</h4>
-        </div>
-        {{/if}}
-    </div>
-</div>
+	{{#if friends.length}}
+		<div class="user-grid">
+			{{#each friends}}
+				<a href="/friends/{{this.friendId}}" class="user-row card--hover">
+					<span class="avatar avatar--md"></span>
+					<div class="user-row__body">
+						<p class="user-row__name">{{this.friendName}}</p>
+						<p class="user-row__sub">Tap to send a song</p>
+					</div>
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-faint)"><polyline points="9 18 15 12 9 6"/></svg>
+				</a>
+			{{/each}}
+		</div>
+	{{else}}
+		<div class="empty">
+			<div class="empty__icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+			</div>
+			<h3>No friends yet</h3>
+			<p class="mt-2">Head to <a href="/search">Discover</a> to find your people.</p>
+		</div>
+	{{/if}}
+
+	<div class="section__head mt-6">
+		<div>
+			<h2 class="section__title">Friend requests</h2>
+			<p class="section__lead">People who want into your circle.</p>
+		</div>
+	</div>
+
+	{{#if newfriend.length}}
+		<div class="stack">
+			{{#each newfriend}}
+				<div class="user-row" data-request-id="{{this.userId}}">
+					<span class="avatar avatar--md"></span>
+					<div class="user-row__body">
+						<p class="user-row__name">{{this.username}}</p>
+						<p class="user-row__sub">Wants to add you</p>
+					</div>
+					<div class="user-row__actions">
+						<button type="button" class="btn btn--primary btn--sm" data-action="accept-friend" data-sender-id="{{this.userId}}" data-sender-name="{{this.username}}">Accept</button>
+						<button type="button" class="btn btn--danger btn--sm" data-action="cancel-request" data-user-id="{{this.userId}}">Decline</button>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	{{else}}
+		<p class="muted">No pending requests.</p>
+	{{/if}}
+</section>

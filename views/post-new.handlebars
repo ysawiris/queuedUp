@@ -1,22 +1,28 @@
-<div class="container">
-    {{#if user}}
-    <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
-            <form action="/posts/new" method="post">
-                <legend>Contact Us</legend>
-                <div class="form-group">
-                    <label for="post-title">Type</label>
-                    <input type="text" name="title" class="form-control" id="post-title" placeholder="is a review, suggestion, or bug">
-                </div>
-                <div class="form-group">
-                    <label for="post-summary">Summary</label>
-                    <textarea name="summary" class="form-control" id="post-summary" placeholder="...tell us whats going on"></textarea>
-                </div>
-                <div class='text-right'>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-{{/if}}
-</div>
+<section class="container section fade-in">
+	<div class="section__head">
+		<div>
+			<h2 class="section__title">Send feedback</h2>
+			<p class="section__lead">Bugs, feature ideas, song‑adding war stories — we want them all.</p>
+		</div>
+	</div>
+
+	<div class="card" style="max-width: 640px;">
+		{{#if error}}
+			<div class="muted" style="color: var(--danger); margin-bottom: 16px;">{{error}}</div>
+		{{/if}}
+		<form action="/posts/new" method="post">
+			<div class="field">
+				<label class="field__label" for="post-title">Type</label>
+				<input type="text" name="title" id="post-title" class="input" placeholder="Bug, feature request, or general feedback" required>
+			</div>
+			<div class="field">
+				<label class="field__label" for="post-summary">Tell us more</label>
+				<textarea name="summary" id="post-summary" class="textarea" placeholder="What happened? What did you expect? What would make this better?" required></textarea>
+			</div>
+			<div class="row" style="justify-content: flex-end;">
+				<a href="/" class="btn btn--ghost">Cancel</a>
+				<button type="submit" class="btn btn--primary">Send feedback</button>
+			</div>
+		</form>
+	</div>
+</section>

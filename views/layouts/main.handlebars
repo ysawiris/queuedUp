@@ -1,48 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Queued Up</title>
-    <link rel="icon" href="/static/image-yoyo-final.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/index.css">
-    <style>
-        body {
-            overflow-x: hidden !important;
-            width: 100%;
-        }
-
-        .navbar-nav {
-            align-items: flex-end;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#0a0a0f">
+	<title>Queued Up — Add songs to your friends' Spotify queue</title>
+	<meta name="description" content="Queued Up lets you add songs to your friend's Spotify queue in real time. Connect with friends, search Spotify, and DJ together.">
+	<link rel="icon" href="/static/QueuedUP.png" type="image/png">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
+	{{> navbar}}
 
-    {{> navbar}}
+	<main class="page">
+		{{{body}}}
+	</main>
 
-    <div>
-        {{{body}}}
+	<footer class="footer">
+		<div class="container footer__row">
+			<span>© Queued Up · Spotify is a trademark of Spotify AB.</span>
+			<span>Built with Express · Upstash Redis · Vercel</span>
+		</div>
+	</footer>
 
-    </div>
+	<div class="toast-host" id="toast-host" aria-live="polite" aria-atomic="true"></div>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="/sendrequest.js"></script>
-    <script type="text/javascript" src="/autocomplete.js"></script>
-
+	<script src="/js/toast.js"></script>
+	<script src="/js/nav.js"></script>
+	{{#if user}}
+		<script src="/js/friend-search.js"></script>
+		<script src="/js/friend-actions.js"></script>
+		<script src="/js/spotify-search.js"></script>
+	{{/if}}
 </body>
-
 </html>
